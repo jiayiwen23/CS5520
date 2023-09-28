@@ -6,6 +6,7 @@ import {
   Button,
   SafeAreaView,
   ScrollView,
+  FlatList,
 } from "react-native";
 import Header from "./components/Header";
 import { useState } from "react";
@@ -49,17 +50,17 @@ export default function App() {
         {/* Inside this text show what user is typing */}
       </View>
       <View style={styles.bottomContainer}>
-        {/* use the map function to iterate over the goal array*/}
-  {/* each item in the goal array is an object, and render the value of 'text' property in <Text> */}
-        <ScrollView bounces={false}
-          contentContainerStyle={styles.contentContainerStyle}>
-          {goals.map((goal, id) => (
-            //换行 wrap each <Text> element in a <View> component
-            <View key={id}>
-              <Text style={styles.text}>{goal.text}</Text>
-            </View>
-          ))}
-        </ScrollView>
+      <FlatList contentContainerStyle={styles.contentContainerStyle}
+        data={goals}
+        renderItem={({item})=>{
+        console.log(item);
+          return (
+            <Text key={item.id} style={styles.text}>
+              {item.text}
+            </Text>
+          );
+      }}
+      />  
       </View>
     </SafeAreaView>
   );
