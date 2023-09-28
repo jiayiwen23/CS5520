@@ -11,6 +11,7 @@ import {
 import Header from "./components/Header";
 import { useState } from "react";
 import Input from "./components/Input";
+import GoalItem from "./components/GoalItem";
 
 export default function App() {
   const [text, setText] = useState("");
@@ -51,16 +52,11 @@ export default function App() {
       </View>
       <View style={styles.bottomContainer}>
       <FlatList contentContainerStyle={styles.contentContainerStyle}
-        data={goals}
-        renderItem={({item})=>{
-        console.log(item);
-          return (
-            <Text key={item.id} style={styles.text}>
-              {item.text}
-            </Text>
-          );
+      data={goals}
+      renderItem={({item})=>{
+        return <GoalItem goal={item} />;
       }}
-      />  
+      />
       </View>
     </SafeAreaView>
   );
