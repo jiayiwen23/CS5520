@@ -30,10 +30,23 @@ export default function App() {
   function makeModalVisible() {
     setIsModalVisible(true);
   }
-
   function makeModalInvisible() {
     setIsModalVisible(false);
   }
+
+  function goalDeleteHandler(deletedId){
+    console.log("I was deleted", deletedId);
+  //   const newArray = goals.filter((goal)=>{
+  //   return goal.id != deletedId;
+  // })
+  //   setGoals(newArray);
+  setGoals((prevGoals)=>{
+    return prevGoals.filter((goal)=>{
+      return goal.id != deletedId;
+      });
+    });
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       {/* <Text>Open up App.js to start working on {name} !</Text> */}
@@ -54,7 +67,7 @@ export default function App() {
       <FlatList contentContainerStyle={styles.contentContainerStyle}
       data={goals}
       renderItem={({item})=>{
-        return <GoalItem goal={item} />;
+        return <GoalItem goal={item} deleteHandler={goalDeleteHandler} />;
       }}
       />
       </View>
