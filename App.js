@@ -20,9 +20,12 @@ export default function App() {
   const name = "My Awesome App";
 
   function changedDataHandler(data) {
+    //receive data back from Input, store the data as text property of an object
     const newGoal = { text: data, id: Math.random() };
     console.log("callback function called ", data);
-    setGoals((prevGoals)=>{return [...prevGoals, newGoal]});
+    setGoals((prevGoals)=>{
+      return [...prevGoals, newGoal];
+    });//arrow function
     setText(data);//use the received data to update the text state variable
     makeModalInvisible();
   }
@@ -47,6 +50,10 @@ export default function App() {
     });
   }
 
+  function goalPressed(){
+    console.log("pressed");
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       {/* <Text>Open up App.js to start working on {name} !</Text> */}
@@ -64,12 +71,10 @@ export default function App() {
         {/* Inside this text show what user is typing */}
       </View>
       <View style={styles.bottomContainer}>
-      <FlatList contentContainerStyle={styles.contentContainerStyle}
-      data={goals}
-      renderItem={({item})=>{
-        return <GoalItem goal={item} deleteHandler={goalDeleteHandler} />;
-      }}
-      />
+        <FlatList contentContainerStyle={styles.contentContainerStyle} data={goals} renderItem={({item})=>{
+          return <GoalItem goal={item} deleteHandler={goalDeleteHandler} pressHandler={goalPressed}/>;
+          }}
+        />
       </View>
     </SafeAreaView>
   );

@@ -49,7 +49,11 @@ const Input = ({ changedHandler, modalVisiblity, hideModal }) => {
             <Button color="red" title="Cancel" onPress={cancelHandler} />
           </View>
           <View style={styles.button}>
-            <Button title="Confirm" onPress={confirmHandler} />
+            {/* empty string "" - falsy */}
+            <Button 
+              disable={!enteredText}
+              title="Confirm" 
+              onPress={confirmHandler} />
           </View>
         </View>
       </View>
