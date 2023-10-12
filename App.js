@@ -71,8 +71,11 @@ export default function App() {
         {/* Inside this text show what user is typing */}
       </View>
       <View style={styles.bottomContainer}>
-        <FlatList contentContainerStyle={styles.contentContainerStyle} data={goals} renderItem={({item})=>{
-          return <GoalItem goal={item} deleteHandler={goalDeleteHandler} pressHandler={goalPressed}/>;
+        <FlatList 
+          contentContainerStyle={styles.contentContainerStyle} 
+          data={goals} 
+          renderItem={({item})=>{
+            return <GoalItem goal={item} deleteHandler={goalDeleteHandler} pressHandler={goalPressed}/>;
           }}
         />
       </View>

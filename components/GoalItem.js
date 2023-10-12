@@ -1,6 +1,7 @@
 import { Text, StyleSheet, Button, View, Pressable } from 'react-native'
 import React from 'react'
 import PressableButton from './PressableButton';
+import { Ionicons } from '@expo/vector-icons'; 
 
 const GoalItem = ( {goal, deleteHandler, pressHandler} ) => {
   function deletePressed() {
@@ -29,6 +30,13 @@ const GoalItem = ( {goal, deleteHandler, pressHandler} ) => {
         <Text style={styles.text}>{goal.text}</Text>
       </PressableButton>
       {/* <Button color='black' title='X' onPress={deletePressed} /> */}
+      <PressableButton
+        pressedFunction={deletePressed}
+        defaultStyle={{ backgroundColor: "#bbb", padding: 5 }}
+        pressedStyle={{ opacity: 0.6 }}
+      >
+        <Ionicons name="trash" size={24} color="black" />
+      </PressableButton>
     </PressableButton>
   )
 }
@@ -48,6 +56,10 @@ const styles = StyleSheet.create({
     fontSize: 30,
     overflow: "hidden",
     marginBottom: 20,
+  },
+  goalPressed: {
+    backgroundColor: "#add",
+    opacity: 0.5,
   },
 });
 
