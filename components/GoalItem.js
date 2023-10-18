@@ -9,7 +9,7 @@ const GoalItem = ( {goal, deleteHandler, pressHandler} ) => {
   }
 
   function goalPressed(){
-    pressHandler(goal.id);
+    pressHandler(goal);
   }
   return (
     // <Pressable onPress={function (){
@@ -17,24 +17,23 @@ const GoalItem = ( {goal, deleteHandler, pressHandler} ) => {
     // }}>为啥这样写
     <PressableButton 
         pressedFunction={goalPressed}
+        // android_ripple={{ color: "#f00" }}
         defaultStyle={styles.goalContainer}
-        pressedStyle={({ pressed }) => [
-          {opacity: pressed ? 0.2 : 1}, styles.goalPressed]}
+        pressedStyle={styles.goalPressed}
     >
-      <PressableButton
+      {/* <PressableButton
         pressedFunction={goalPressed}
         defaultStyle={styles.goalContainer}
         pressedStyle={({ pressed }) => [
           {opacity: pressed ? 0.2 : 1}, styles.goalPressed]}
-      >
+      > */}
         <Text style={styles.text}>{goal.text}</Text>
-      </PressableButton>
       {/* <Button color='black' title='X' onPress={deletePressed} /> */}
-      <PressableButton
-        pressedFunction={deletePressed}
-        defaultStyle={{ backgroundColor: "#bbb", padding: 5 }}
-        pressedStyle={{ opacity: 0.6 }}
-      >
+        <PressableButton
+          pressedFunction={deletePressed}
+          defaultStyle={{ backgroundColor: "#bbb", padding: 5 }}
+          pressedStyle={{ opacity: 0.6 }}
+        >
         <Ionicons name="trash" size={24} color="black" />
       </PressableButton>
     </PressableButton>
