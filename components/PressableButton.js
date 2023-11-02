@@ -16,11 +16,7 @@ const PressableButton = ({children, defaultStyle, pressedStyle, pressedFunction}
 
 const styles = StyleSheet.create({
     styleByDefault: {
-      flexDirection: "row",
-      backgroundColor: "#aaa",
-      marginBottom: 20,
-      borderRadius: 5,
-      alignItems: "center",
+      backgroundColor: "beige",
     },
   });
 

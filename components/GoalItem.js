@@ -1,4 +1,4 @@
-import { Text, StyleSheet, Button, View, Pressable } from 'react-native'
+import { Text, StyleSheet } from 'react-native'
 import React from 'react'
 import PressableButton from './PressableButton';
 import { Ionicons } from '@expo/vector-icons'; 

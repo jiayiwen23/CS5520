@@ -7,23 +7,45 @@ import {
   FlatList,
 } from "react-native";
 import Header from "./Header";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Input from "./Input";
 import GoalItem from "./GoalItem";
+import { database } from "../firebase/firebaseSetup";
+import { writeToDB } from "../firebase/firestoreHelper";
+import { collection, onSnapshot } from "firebase/firestore";
 
 export default function Home({ navigation }) {
+  console.log(database);
   const [text, setText] = useState("");
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [goals, setGoals] = useState([]);
   const name = "My Awesome App";
-
+  useEffect(()=>{
+    onSnapshot(collection(database, "goals"), (querySnapshot)=>{
+      if (!querySnapshot.empty){
+        let newArray = [];
+        querySnapshot.docs.forEach((docSnap) => {
+          newArray.push(docSnap.data());
+        });
+        // for (let i = 0; i < querySnapshot.docs[i].length; i++){
+        //   newArray.push(querySnapshot.docs[i].data());
+        // }
+        setGoals(newArray);
+        //console.log(querySnapshot.docs);
+      }
+    });
+  }, []);
+  
   function changedDataHandler(data) {
     //receive data back from Input, store the data as text property of an object
     const newGoal = { text: data, id: Math.random() };
-    console.log("callback function called ", data);
-    setGoals((prevGoals)=>{
-      return [...prevGoals, newGoal];
-    });//arrow function
+    // console.log("callback function called ", data);
+    // setGoals((prevGoals)=>{
+    //   return [...prevGoals, newGoal];
+    // });
+
+    //write newGoal to db
+    writeToDB(newGoal);
     setText(data);//use the received data to update the text state variable
     makeModalInvisible();
   }

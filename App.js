@@ -19,7 +19,7 @@ export default function App() {
           }}>
         <Stack.Screen name="Home" component={Home} options={{headerTitle: 'All My Goals'}}/>
         <Stack.Screen name="Details" component={GoalDetails} options={
-            ({ route }) => {
+            ({ route }) => {//destructuring 'route' from a long object (include navigation, route)
               return {
                 title: route.params.pressedGoal.text,
                 headerRight: ()=>{
