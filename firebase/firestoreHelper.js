@@ -10,4 +10,12 @@ export async function writeToDB(goal){
         console.log(err);
     }
 }
+
+export async function deleteFromDB(id) {
+    try {
+      await deleteDoc(doc(database, "goals", id));
+    } catch (err) {
+      console.log(err);
+    }
+  }
     

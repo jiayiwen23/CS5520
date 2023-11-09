@@ -11,8 +11,8 @@ import { useEffect, useState } from "react";
 import Input from "./Input";
 import GoalItem from "./GoalItem";
 import { database } from "../firebase/firebaseSetup";
-import { writeToDB } from "../firebase/firestoreHelper";
-import { collection, onSnapshot } from "firebase/firestore";
+import { deleteFromDB, writeToDB } from "../firebase/firestoreHelper";
+import { collection, onSnapshot, query, where } from "firebase/firestore";
 
 export default function Home({ navigation }) {
   console.log(database);
@@ -20,25 +20,38 @@ export default function Home({ navigation }) {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [goals, setGoals] = useState([]);
   const name = "My Awesome App";
-  useEffect(()=>{
-    onSnapshot(collection(database, "goals"), (querySnapshot)=>{
-      if (!querySnapshot.empty){
+
+  useEffect(() => {
+    const q = query(collection(database, "goals", where()));
+    const unsubscribe = //onSnapshot listens for changes to a particular query and executes a callback when the data changes
+    onSnapshot(collection(database, "goals"), (querySnapshot) => {
+        //the callback provided to onSnapshot receives a querySnapshot that represents the current state of the query
         let newArray = [];
-        querySnapshot.docs.forEach((docSnap) => {
-          newArray.push(docSnap.data());
-        });
-        // for (let i = 0; i < querySnapshot.docs[i].length; i++){
-        //   newArray.push(querySnapshot.docs[i].data());
-        // }
+        if (!querySnapshot.empty) {
+          // use a for loop to call .data() on each item of querySnapshot.docs
+          querySnapshot.docs.forEach((docSnap) => {
+            newArray.push({ ...docSnap.data(), id: docSnap.id });
+          });
+          // This also works, because .forEach method of querysnapshot enumerated all the documentsnapshots in it
+          // querySnapshot.forEach((docSnap) => {
+          //   newArray.push({ ...docSnap.data(), id: docSnap.id });
+          // });
+          // for (let i = 0; i < querySnapshot.docs.length; i++) {
+          //   newArray.push(querySnapshot.docs[i].data());
+          // }
+        }
         setGoals(newArray);
-        //console.log(querySnapshot.docs);
       }
-    });
+    );
+    return () => {
+      unsubscribe();//cleanup function
+      //when the component is about to unmount or when the dependencies change, React will execute it
+    };
   }, []);
   
   function changedDataHandler(data) {
     //receive data back from Input, store the data as text property of an object
-    const newGoal = { text: data, id: Math.random() };
+    const newGoal = { text: data };
     // console.log("callback function called ", data);
     // setGoals((prevGoals)=>{
     //   return [...prevGoals, newGoal];
@@ -63,11 +76,12 @@ export default function Home({ navigation }) {
   //   return goal.id != deletedId;
   // })
   //   setGoals(newArray);
-  setGoals((prevGoals)=>{
-    return prevGoals.filter((goal)=>{
-      return goal.id != deletedId;
-      });
-    });
+  deleteFromDB(deletedId);
+  // setGoals((prevGoals)=>{
+  //   return prevGoals.filter((goal)=>{
+  //     return goal.id != deletedId;
+  //     });
+  //   });
   }
 
   function goalPressed(pressedGoal){
