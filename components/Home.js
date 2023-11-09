@@ -22,9 +22,10 @@ export default function Home({ navigation }) {
   const name = "My Awesome App";
 
   useEffect(() => {
-    const q = query(collection(database, "goals", where()));
+    const q = query(collection(database, "goals", where("user", "==", auth.currentUser.uid)));
+
     const unsubscribe = //onSnapshot listens for changes to a particular query and executes a callback when the data changes
-    onSnapshot(collection(database, "goals"), (querySnapshot) => {
+    onSnapshot(q, (querySnapshot) => {
         //the callback provided to onSnapshot receives a querySnapshot that represents the current state of the query
         let newArray = [];
         if (!querySnapshot.empty) {
@@ -41,6 +42,12 @@ export default function Home({ navigation }) {
           // }
         }
         setGoals(newArray);
+      },
+      (err) => {
+        console.log(err);
+        if (err.code === "permission-denied") {
+          Alert.alert("You don't have permission or there is an error in your querys");
+        }
       }
     );
     return () => {
